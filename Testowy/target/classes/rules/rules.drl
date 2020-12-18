@@ -1,0 +1,830 @@
+package com.sample
+import javax.swing.JOptionPane
+import javax.swing.JFrame
+import org.kie.api.runtime.KieRuntime
+import javax.swing.JRadioButton
+import javax.swing.JPanel
+global JFrame frame
+global javax.swing.JTextArea textArea
+import java.util.ArrayList
+import java.util.List
+import java.util.Arrays;
+import java.util.ArrayList
+import javax.swing.JLabel;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+
+declare enum Questions
+	Japan("Are you in Japan?"),
+	MissMeat("Do you miss meat?"),
+	Summer("Is it summer?"),
+	Thanksgiving("Is it Thanksgiving?"),
+	Pee("Do you mind your pee smelling of sulfur?"),
+	Haloween("Is it Halloween?"),
+	Eyes("Do you have poor eyesight?"),
+	Mexico("Are you doing a Mexican night?"),
+	DeepSouth("Are you in the deep South?"),
+	Popeye("Are you Popeye?"),
+	Corona("Is there Corona in your cart?"),
+	Doctor("Are you trying to keep the doctor away?"),
+	Dog("Will you blame it on the dog?"),
+	Chef("Are you a chef?"),
+	Dirt("Do you like the taste of dirt?"),
+	Mayo("Do you like mayonnaise?"),
+	Regular("Do you need to get regular?"),
+	Hawaii("Are you in Hawaii?"),
+	Simpson("Are you a Simpson?"),
+	Fit("Are you trying to lose a couple dress size?"),
+	Mom("Is your mom cooking?"),
+	GoodMom("Is she trying to look like a good mom?"),
+	Smoothie("Are you making a smoothie?"),
+	Juice("Do you own a juicer?"),
+	Hype("Do you belive the hype?"),
+	End("Are you nearing the end of your life?"),
+	Network("Do you watch the food network?"),
+	Snack("Do you need a quick snack?"),
+	Date("Are you with a date?"),
+	Know("Do you know what these are?"),
+	BestFruit("Do you want the best fruit in the world?"),
+	BestVege("Do you want the best vegetable in the world?"),
+	Youth("Are you entrepreneuring youth?"),
+	Pasta("Are you making pasta sauce?");
+	calePytanie : String;
+end
+
+declare enum Answers
+	Japan("You should eat horseradish"),
+	MissMeat("You should eat eggplant or Champignon"),
+	Summer("you should either eat melon, watermelon or Cantaloupe"),
+	Thanksgiving("You should eat sweet potato or cranberry"),
+	Pee("You should eat asparagus"),
+	Haloween("You should eat pumpkin or turnip"),
+	Eyes("you should eat carrot"),
+	Mexico("You should eat Paprika, chili, avocado and coriander leaves"),
+	DeepSouth("You should eat cabbage and peas"),
+	Popeye("You should eat spinach"),
+	Corona("You should eat lime"),
+	Doctor( "You should eat an apple"),
+	Dog("You should eat cauliflower, radish and cabbage"),
+	Chef("You should eat onion, ginger,  Bay leaf, thyme, rosemary, cumin and marjoram"),
+	Dirt("You should eat beetroot"),
+	Mayo("You should eat brussels sprouts"),
+	Regular("You should eat raisins"),
+	Hawaii("You should eat coconut and taro"),
+	Simpson("You should eat pink glop"),
+	Fit("You should eat grapefruit, leek and potato"),
+	GoodMom("You should eat broccoli and brussels sprouts"),
+	BadMom("You should eat potato and  Green Beans"),
+	Smoothie("You should eat blackberries, blueberries, raspberries and kiwi"),
+	Juice("You should eat  orange, pineapple, guava and papaya"),
+	Hype("You should eat pomgranate and blueberries"),
+	End("You should eat Super Mario's  1UP green mushroom"),
+	Network("You should eat onion, garlic, mushrooms and chive"),
+	Snack("You should eat either banana, tangerine, plums, peach , pear or apricot"),
+	Date("You should eat either mango, strawberries, grape or  cherries"),
+	Know("You should eat rhubarb or parsley root"),
+	BestFruit("You should eat a fig"),
+	BestVege("You should eat a corn"),
+	Youth("You should eat lemon"),
+	Pasta("You should eat basile, tomato and champignon"),
+	NoPasta("You should eat zuchini, cucumber, lettuce and peas");
+	calaSugestia : String;
+end
+ 
+declare Question
+	pytanie: Questions;
+	ans : String;
+	sugestia : Answers;
+end
+
+rule init
+	when
+	then
+	Question q = new Question();
+	q.setPytanie(Questions.Japan);
+	insert(q);
+end
+
+
+rule Japan
+    when
+   	q:Question();
+    eval (q.getPytanie() == Questions.Japan);
+    then
+    q = AskUser(frame, kcontext.getKieRuntime(), q);
+end
+
+rule Japan_yes
+    when
+    q : Question();
+ 	eval (q.getPytanie() == Questions.Japan && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Japan);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+
+rule Japan_no
+    when
+    q: Question();
+    eval (q.getPytanie() == Questions.Japan && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.MissMeat);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule MissMeat_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.MissMeat && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.MissMeat);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule MissMeat_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.MissMeat && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Summer);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Summer_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Summer && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Summer);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Summer_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Summer && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Thanksgiving);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Thanksgiving_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Thanksgiving && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Thanksgiving);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Thanksgiving_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Thanksgiving && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Pee);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Pee_yes
+    when
+    q: Question();
+    eval (q.getPytanie() == Questions.Pee && q.getAns() == 'Yes');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Haloween);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Pee_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Pee && q.getAns() == 'No');
+    then
+    q.setSugestia(Answers.Pee);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Haloween_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Haloween && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Haloween);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Haloween_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Haloween && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Eyes);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Eye_yes
+    when
+    q : Question();
+    eval (q.getPytanie() == Questions.Eyes && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Eyes);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Eye_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Eyes && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Mexico);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Mexico_yes
+    when
+    q : Question()
+    eval (q.getPytanie() == Questions.Mexico && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Mexico);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Mexico_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Mexico && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.DeepSouth);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule DeepSouth_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.DeepSouth && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.DeepSouth);
+    suggest(frame, kcontext.getKieRuntime(),q.getSugestia().getCalaSugestia() );
+end
+
+rule DeepSouth_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.DeepSouth && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Popeye);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Popeye_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Popeye && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Popeye);
+    suggest(frame, kcontext.getKieRuntime(),q.getSugestia().getCalaSugestia() );
+end
+
+rule Popeye_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Popeye && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Corona);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Corona_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Corona && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Corona);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Corona_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Corona && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Doctor);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Doctor_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Doctor && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Doctor);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Doctor_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Doctor && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Dog);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Dog_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Dog && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Dog);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Dog_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Dog && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Chef);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Chef_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Chef && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Chef);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Chef_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Chef && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Dirt);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Dirt_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Dirt && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Dirt);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Dirt_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Dirt && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Mayo);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Mayo_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Mayo && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Mayo);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Mayo_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Mayo && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Regular);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Regular_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Regular && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Regular);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Regular_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Regular && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Hawaii);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Hawaii_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Hawaii && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Hawaii);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Hawaii_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Hawaii && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Simpson);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Simpson_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Simpson && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Simpson);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Simpson_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Simpson && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Fit);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Fit_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Fit && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Fit);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Fit_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Fit && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Mom);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Mom_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Mom && q.getAns() == 'Yes');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.GoodMom);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Mom_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Mom && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Smoothie);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule GoodMom_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.GoodMom && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.GoodMom);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule GoodMom_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.GoodMom && q.getAns() == 'No');
+    then
+ 	q.setSugestia(Answers.BadMom);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+
+rule Smoothie_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Smoothie && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Smoothie);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Smoothie_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Smoothie && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Juice);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Juice_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Juice && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Juice);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Juice_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Juice && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Hype);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Hype_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Hype && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Hype);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Hype_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Hype && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.End);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule End_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.End && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.End);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule End_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.End && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Network);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Network_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Network && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Network);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Network_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Network && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Snack);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Snack_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Snack && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Snack);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Snack_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Snack && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Date);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Date_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Date && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Date);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Date_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Date && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Know);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Know_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Know && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Know);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Know_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Know && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.BestFruit);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule BestFriut_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.BestFruit && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.BestFruit);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Best_fruit_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.BestFruit && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.BestVege);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule BestVege_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.BestVege && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.BestVege);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule BestVege_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.BestVege && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Youth);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Youth_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Youth && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Youth);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Youth_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Youth && q.getAns() == 'No');
+    then
+    Question q1 = new Question();
+    q1.setPytanie(Questions.Pasta);
+    q1 = AskUser(frame, kcontext.getKieRuntime(), q1);
+	insert(q1);
+end
+
+rule Pasta_yes
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Pasta && q.getAns() == 'Yes');
+    then
+    q.setSugestia(Answers.Pasta);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+rule Pasta_no
+    when
+    q:Question();
+    eval (q.getPytanie() == Questions.Pasta && q.getAns() == 'No');
+    then
+    q.setSugestia(Answers.NoPasta);
+    suggest(frame, kcontext.getKieRuntime(), q.getSugestia().getCalaSugestia());
+end
+
+
+function void suggest(JFrame frame, KieRuntime krt, String polecane) {
+    final JPanel panel = new JPanel();
+    String text = polecane;
+    panel.add(new JLabel(text));
+    JOptionPane.showMessageDialog(frame, panel,"Recommended product",JOptionPane.INFORMATION_MESSAGE);
+}
+
+function Question AskUser(JFrame frame, KieRuntime krt, Question q) {
+	final Question odczyt = q;
+    final JPanel panel = new JPanel(new GridLayout(0, 1));
+    panel.add(new JLabel(q.getPytanie().getCalePytanie()));
+    int pane = JOptionPane.showConfirmDialog(frame, panel, "Question", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+    if (pane == JOptionPane.YES_OPTION) {
+        odczyt.setAns('Yes');
+    }
+    else if (pane == JOptionPane.NO_OPTION)
+    	odczyt.setAns('No');
+    else 
+    	System.exit(0);
+    return odczyt;
+}
+
+
+
+
+
+
+
+
+
+
